@@ -21,7 +21,7 @@ psutil
 docopt
 sleekxmpp
 eventlet
-requests-futures
+requests-futures==0.9.5
 irc
 six>=1.10.0
 colorama
