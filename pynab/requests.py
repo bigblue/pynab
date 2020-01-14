@@ -3,6 +3,7 @@ import regex
 from pynab import log
 from pynab.db import db_session, Release, Pre, Group, windowed_query
 import config
+import sqlalchemy
 
 
 GROUP_ALIASES = {
@@ -25,7 +26,7 @@ def process(limit=None):
         for group, reg in GROUP_REQUEST_REGEXES.items():
             # noinspection PyComparisonWithNone
             query = db.query(Release).join(Group).filter(Group.name==group).filter(Release.pre_id == None).\
-                filter(Release.category_id == '8010').filter("releases.name ~ '{}'".format(reg))
+                filter(Release.category_id == '8010').filter(sqlalchemy.text("releases.name ~ '{}'".format(reg)))
 
             for release in windowed_query(query, Release.id, config.scan.get('binary_process_chunk_size')):
                 # check if it's aliased
