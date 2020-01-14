@@ -6,6 +6,7 @@ import time
 import tempfile
 import os
 import hashlib
+import sqlalchemy
 
 import psycopg2
 from sqlalchemy import Column, Integer, BigInteger, LargeBinary, Text, String, Boolean, DateTime, ForeignKey, \
@@ -307,7 +308,7 @@ def column_windows(session, column, windowsize):
     ). \
         from_self(column)
     if windowsize > 1:
-        q = q.filter("rownum %% %d=1" % windowsize)
+        q = q.filter(sqlalchemy.text("rownum %% %d=1" % windowsize))
 
     intervals = [id for id, in q]
 
